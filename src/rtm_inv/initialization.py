@@ -43,7 +43,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
-from typing import Mapping
+from collections.abc import Mapping
 
 import numpy as np
 import torch

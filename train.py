@@ -20,7 +20,7 @@ SRC_ROOT = PROJECT_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from rtm_inv import BscanLoss, BscanOnlyNet, DeepwaveClosedLoopRTM, PermittivityLoss, RTMDataset, RTMInvNet
+from rtm_inv import BscanLoss, DeepwaveClosedLoopRTM, PermittivityLoss, RTMDataset, RTMInvNet
 from rtm_inv.stages import (
     DEFAULT_TARGET_ALPHA,
     NON_FINAL_TOTAL_WEIGHT,
@@ -49,15 +49,8 @@ from rtm_inv.protocol import (
 )
 
 
-MODEL_INPUT_MODES = (
-    "m0_bscan",
-    "m0_rtm",
-    "m0_rtm_bscan",
-    "m0_rtm_bscan_gated",
-    "bscan",
-    "rtm",
-)
-UPDATE_BACKBONES = ("unet", "unetpp", "transunet")
+MODEL_INPUT_MODES = ("m0_rtm",)
+UPDATE_BACKBONES = ("unet",)
 BSCAN_SCALE_QUANTILE = 0.95
 BSCAN_SCALE_EPS = 1e-12
 # A dead legacy key that `main()` used to assign unconditionally as the oracle
@@ -327,7 +320,7 @@ def parse_args() -> argparse.Namespace:
         "--model-input-mode",
         choices=MODEL_INPUT_MODES,
         default="m0_rtm",
-        help="UpdateNet input for ablation.",
+        help="Main network input: current model and RTM image.",
     )
     parser.add_argument("--unet-base-channels", type=int, default=64)
     parser.add_argument("--unet-depth", type=int, default=3)
@@ -841,22 +834,16 @@ def main() -> None:
         device=device,
     )
 
-    if args.model_input_mode == "bscan":
-        model = BscanOnlyNet(
-            unet_base_channels=args.unet_base_channels,
-            unet_depth=args.unet_depth,
-        ).to(device)
-    else:
-        model = RTMInvNet(
-            rtm_operator=rtm_operator,
-            compute_synthetic_data=args.data_loss_weight > 0.0,
-            input_mode=args.model_input_mode,
-            unet_base_channels=args.unet_base_channels,
-            unet_depth=args.unet_depth,
-            num_stages=args.num_stages,
-            update_backbone=args.update_backbone,
-            recompute_rtm_between_stages=args.recompute_rtm_between_stages,
-        ).to(device)
+    model = RTMInvNet(
+        rtm_operator=rtm_operator,
+        compute_synthetic_data=args.data_loss_weight > 0.0,
+        input_mode=args.model_input_mode,
+        unet_base_channels=args.unet_base_channels,
+        unet_depth=args.unet_depth,
+        num_stages=args.num_stages,
+        update_backbone=args.update_backbone,
+        recompute_rtm_between_stages=args.recompute_rtm_between_stages,
+    ).to(device)
     model_loss_fn = PermittivityLoss(
         l1_weight=args.model_l1_weight,
         mse_weight=args.model_mse_weight,

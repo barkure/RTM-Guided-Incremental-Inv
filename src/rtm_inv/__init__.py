@@ -1,5 +1,4 @@
 from .bscan import normalise_bscan, preprocess_bscan, robust_bscan_scale
-from .bscan_only import BscanOnlyNet
 from .data import RTMDataset
 from .deepwave_rtm import DeepwaveClosedLoopRTM
 from .gpr import GPRSurveyConfig
@@ -100,7 +99,6 @@ from .statistics import (
 
 __all__ = [
     "BscanLoss",
-    "BscanOnlyNet",
     "CONSTANT_MODES",
     "CoverageCheck",
     "DEFAULT_BOOTSTRAP_REPEATS",

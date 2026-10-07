@@ -18,7 +18,7 @@ SRC_ROOT = PROJECT_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from rtm_inv import BscanOnlyNet, DeepwaveClosedLoopRTM, RTMDataset, RTMInvNet
+from rtm_inv import DeepwaveClosedLoopRTM, RTMDataset, RTMInvNet
 from rtm_inv.protocol import (
     MetricProtocol,
     SplitIdentity,
@@ -266,11 +266,6 @@ def build_model(
     update_backbone = getattr(saved_args, "update_backbone", "unet")
     recompute_rtm_between_stages = getattr(saved_args, "recompute_rtm_between_stages", True)
     rtm_operator = DeepwaveClosedLoopRTM(shot_batch_size=shot_batch_size, device=device)
-    if input_mode == "bscan":
-        return BscanOnlyNet(
-            unet_base_channels=base_channels,
-            unet_depth=unet_depth,
-        ).to(device)
     return RTMInvNet(
         rtm_operator=rtm_operator,
         compute_synthetic_data=False,
@@ -369,42 +364,15 @@ def plot_prediction(
         if rtm_i1_abs_max <= 0.0:
             rtm_i1_abs_max = 1.0
 
-    is_bscan_only = bool(outputs.get("direct_model_prediction", False))
-    if is_bscan_only:
-        title_metrics = f"MAE final {final_mae:.4f}"
-        panels = [
-            ("Bscan", input_panel, "gray", -bscan_abs_max, bscan_abs_max),
-            ("Final", final, "turbo", vmin, vmax),
-            ("Target", target, "turbo", vmin, vmax),
-        ]
-    elif input_mode == "m0_bscan":
-        title_metrics = f"MAE init {initial_mae:.4f} -> final {final_mae:.4f}"
-        panels = [
-            ("Bscan", input_panel, "gray", -bscan_abs_max, bscan_abs_max),
-            ("Initial", initial, "turbo", vmin, vmax),
-            ("Stage1", stage1, "turbo", vmin, vmax),
-            ("Final", final, "turbo", vmin, vmax),
-            ("Target", target, "turbo", vmin, vmax),
-        ]
-    elif input_mode == "rtm":
-        title_metrics = f"MAE final {final_mae:.4f}"
-        panels = [
-            ("Bscan", input_panel, "gray", -bscan_abs_max, bscan_abs_max),
-            ("RTM 1 (M0)", rtm_i0, "gray", -rtm_abs_max, rtm_abs_max),
-            ("Stage1", stage1, "turbo", vmin, vmax),
-            ("Final", final, "turbo", vmin, vmax),
-            ("Target", target, "turbo", vmin, vmax),
-        ]
-    else:
-        title_metrics = f"MAE init {initial_mae:.4f} -> final {final_mae:.4f}"
-        panels = [
-            ("Bscan", input_panel, "gray", -bscan_abs_max, bscan_abs_max),
-            ("Initial", initial, "turbo", vmin, vmax),
-            ("RTM 1 (M0)", rtm_i0, "gray", -rtm_abs_max, rtm_abs_max),
-            ("Stage1", stage1, "turbo", vmin, vmax),
-            ("Final", final, "turbo", vmin, vmax),
-            ("Target", target, "turbo", vmin, vmax),
-        ]
+    title_metrics = f"MAE init {initial_mae:.4f} -> final {final_mae:.4f}"
+    panels = [
+        ("Bscan", input_panel, "gray", -bscan_abs_max, bscan_abs_max),
+        ("Initial", initial, "turbo", vmin, vmax),
+        ("RTM 1 (M0)", rtm_i0, "gray", -rtm_abs_max, rtm_abs_max),
+        ("Stage1", stage1, "turbo", vmin, vmax),
+        ("Final", final, "turbo", vmin, vmax),
+        ("Target", target, "turbo", vmin, vmax),
+    ]
     if num_stages == 1:
         panels = [panel for panel in panels if panel[0] != "Stage1"]
     elif rtm_i1 is not None and rtm_i1_abs_max is not None:

@@ -1,4 +1,6 @@
-# RTM-Guided Deep Incremental Inversion for GPR
+# RTM-Guided-Incremental-Inv
+
+RTM-guided deep incremental inversion for ground-penetrating radar.
 
 Initial public code release for **Reverse-Time-Migration-Guided Deep Incremental Inversion for Ground-Penetrating Radar**.
 
@@ -48,7 +50,7 @@ pixi run python train.py \
   --data-loss-weight 0 --epochs 100 --early-stopping-patience 8
 ```
 
-Use `--no-recompute-rtm-between-stages` for RTM-Reuse, or `--num-stages 1` for Single-stage RTM. Other input modes implement B-scan and fusion controls. The example command is a starting configuration; it is not a substitute for all original experiment configurations.
+Use `--no-recompute-rtm-between-stages` for RTM-Reuse, or `--num-stages 1` for Single-stage RTM. The example command is a starting configuration; it is not a substitute for all original experiment configurations.
 
 ## Evaluation
 
@@ -72,4 +74,4 @@ Evaluation reconstructs the checkpoint's test split and records sample identitie
 - `tests/`: selected tests that do not require the private experiment archive.
 - `pixi.toml`, `pixi.lock`: environment definition and lockfile.
 
-The internal Python package remains named `rtm_inv` for compatibility. Additional model modules in `src/rtm_inv/` support comparison methods; their complete training pipelines will be supplied in a later release.
+The internal Python package remains named `rtm_inv` for compatibility. Only the main RTM-guided U-Net update network is included. Single-stage and fixed-RTM settings are retained as controls of this same network. External comparison networks and B-scan fusion architectures are excluded.
