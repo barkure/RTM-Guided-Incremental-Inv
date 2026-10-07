@@ -7,7 +7,8 @@ __pycache__/
 .DS_Store
 train_runs/
 evaluation/
-data/
+data/*
+!data/README.md
 *.pt
 *.pth
 *.ckpt
