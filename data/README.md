@@ -1,6 +1,17 @@
 # Dataset
 
-The dataset will be distributed through a cloud-drive link. The download link and any extraction code will be added here once the upload is complete.
+Download the dataset archive from [iCloud Drive](https://www.icloud.com.cn/iclouddrive/0a37XwGrQKcWwBEGBawKtLvLg).
+
+- Archive: `rock_1000.zip`
+- Size: approximately 776 MiB
+- SHA-256: `5e894bbb248589bf1eeab04bd633fd222d53263df758fd10dfa13131e3583465`
+
+Verify the downloaded archive before extraction:
+
+```bash
+sha256sum rock_1000.zip
+# macOS: shasum -a 256 rock_1000.zip
+```
 
 ## Local layout
 
@@ -19,4 +30,4 @@ data/rock_1000/
 
 Each sample stores relative permittivity and B-scan observations; metadata specify acquisition geometry and numerical settings. The training and evaluation commands should use `--data-dir data/rock_1000`.
 
-Dataset files and downloaded archives are excluded from Git. This directory tracks only the download and usage instructions. Archive size, checksum and exact contents will be documented with the download link.
+Dataset files and downloaded archives are excluded from Git. This directory tracks only the download and usage instructions. The archive contains the top-level `rock_1000/` directory, sample directories and a dataset manifest.

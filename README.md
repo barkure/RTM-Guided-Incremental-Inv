@@ -25,7 +25,7 @@ pixi run python -m unittest discover -s tests -v
 
 ## Data
 
-Dataset download and placement instructions are maintained in [`data/README.md`](data/README.md). The cloud-drive link will be added after the upload is complete. Until then, supply your own authorized data. No private credentials are distributed. Samples are organized as `sample_*/data.pt` with accompanying `meta.json`; the dataset reader supports the schema produced by the generator below. Required model and observation tensors are `permittivity` and `bscan_processed`; metadata describe geometry, space/time sampling, and wavelet settings.
+Dataset download and placement instructions are maintained in [`data/README.md`](data/README.md). The synthetic dataset is available through the linked iCloud Drive download. No private credentials are distributed. Samples are organized as `sample_*/data.pt` with accompanying `meta.json`; the dataset reader supports the schema produced by the generator below. Required model and observation tensors are `permittivity` and `bscan_processed`; metadata describe geometry, space/time sampling, and wavelet settings.
 
 Generate a small synthetic dataset to inspect the format (illustrative data, not the paper dataset):
 
