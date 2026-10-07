@@ -30,4 +30,4 @@ data/rock_1000/
 
 Each sample stores relative permittivity and B-scan observations; metadata specify acquisition geometry and numerical settings. The training and evaluation commands should use `--data-dir data/rock_1000`.
 
-Dataset files and downloaded archives are excluded from Git. This directory tracks only the download and usage instructions. The archive contains the top-level `rock_1000/` directory, sample directories and a dataset manifest.
+The `data/` directory is tracked by Git. The full dataset archive is hosted on iCloud Drive; this repository currently contains its download and usage instructions. The archive contains the top-level `rock_1000/` directory, sample directories and a dataset manifest.
