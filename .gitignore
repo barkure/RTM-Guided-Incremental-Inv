@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pixi/
+.venv/
+.env
+.env.*
+.DS_Store
+train_runs/
+evaluation/
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.mat
+*.h5
+*.log
